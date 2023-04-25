@@ -1,8 +1,8 @@
 import axios from 'axios';
 import authHeader from './authHeader'
 const protocal = 'http';
-//const base = '192.168.1.9:6080';
-const base = '171.7.67.25'
+const base = '192.168.1.9:6080';
+//const base = '171.7.67.25'
 
 const API_URL = `${protocal}://${base}/api/`;
 

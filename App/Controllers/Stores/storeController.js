@@ -33,24 +33,24 @@ exports.Shop = async (req, res) => {
                         const product = await Products.findOne({ _id: store.product }).exec();
                         const promotions = await Promotions.findOne({ product: store.product }).exec();
 
-                        const calcurate = (store.expiry - store.createAt) / 1000 / 60 / 60 / 24;
+                        const calcurate = Math.ceil((store.expiry - store.createAt) / 1000 / 60 / 60 / 24);
                         let expiry = 30;
                         let price = product.price;
-                        let havePromo = false;
                         if (expiry == 0)
                             continue;
-                            const sorted = promotions.promotion.sort((a,b) => parseInt(a.remainingdays) - parseInt(b.remainingdays))
+                        const sorted = promotions.promotion.sort((a, b) => parseInt(b.remainingdays) - parseInt(a.remainingdays))
+
+                        sorted.map(promo => {
                            
-                            sorted.map(promo => {
-                                if( calcurate > promo.remainingdays)
-                                {
-                                    expiry = promo.remainingdays
-                                    price = promo.price
-                                    havePromo = true;
-                                }
+                            if (calcurate >= expiry)
+                            return;
+                         
+                            if (calcurate >= promo.remainingdays) {
+                              
+                                expiry = promo.remainingdays
+                                price = promo.price
+                            }
                         })
-                        if(!havePromo)
-                        continue;
                         const myData = {
                             orderId: store._id,
                             expiry: expiry,
@@ -115,7 +115,7 @@ exports.PurchaseItem = (req, res) => {
             return res.status(500).json({ error: 'Internal Server Error' });
         if (order)
             return res.status(400).json({ error: 'Order Sold Alreadry!' });
-      
+
         Stores.findById(orderId, (err, store) => {
             if (err)
                 return res.status(500).json({ error: 'Internal Server Error' });
@@ -140,7 +140,7 @@ exports.PurchaseItem = (req, res) => {
                 Promotions.findOne({ product: store.product }, (err, promos) => {
                     if (err)
                         return res.status(500).json({ error: 'Internal Server Error' });
-                        promos.promotion.map(promo => {
+                    promos.promotion.map(promo => {
                         if (expiry <= promo.remainingdays)
                             price = promo.price
                     })
@@ -148,10 +148,10 @@ exports.PurchaseItem = (req, res) => {
                 const newItem = new Purchase({
                     orderid: orderId,
                     userid: userId,
-                    price:price,
-                    product:product.name,
-                    createAt:moment(),
-                    expiry:moment().add(expiry, 'days')
+                    price: price,
+                    product: product.name,
+                    createAt: moment(),
+                    expiry: moment().add(expiry, 'days')
                 });
                 try {
                     // ส่วนนี้ ยังขาดการหัก Point 

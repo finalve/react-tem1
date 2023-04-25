@@ -51,7 +51,7 @@ function NavBar() {
               border: 0
             }}
           >
-            MMYSTORES
+            LOGO
           </Typography>
 
           <Typography
@@ -72,7 +72,7 @@ function NavBar() {
               border: 0
             }}
           >
-            MMYSTORES
+            LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} />
           {authState!==null ? 

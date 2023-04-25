@@ -79,7 +79,7 @@ function Register() {
           <Button onClick={handleOnSubmit} variant='contained' color='error' sx={{ width: '100%' }}>{language.register}</Button>
         </CardActions>
         <CardContent>
-          <Typography variant='body1' >หากมีบัญชี MMYSTORES <Link to={'/auth/login'}>{language.login}</Link></Typography>
+          <Typography variant='body1' >หากมีบัญชี <Link to={'/auth/login'}>{language.login}</Link></Typography>
         </CardContent>
       </Card>
     </Box>

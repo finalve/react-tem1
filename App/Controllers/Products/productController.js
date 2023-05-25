@@ -63,7 +63,7 @@ exports.CreatePromotion = (req, res) => {
         promotion: promotion
     });
 
-    Products.findOne({ name: product }, (err, product) => {
+    Products.findOne({ name:  { $eq: product }  }, (err, product) => {
         if (err) {
             res.status(500).send({ message: err });
             return;

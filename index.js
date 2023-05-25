@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const rateLimit = require("express-rate-limit");
 
 const cors = require('cors');
 const Routes = require('./App/Routes');
@@ -9,6 +9,13 @@ const config = require('./config');
 const db = require("./App/Models");
 const app = express();
 const port = 6080;
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100 // limit each IP to 100 requests per windowMs
+  });
+  
+  //  apply to all requests
+app.use(limiter);
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

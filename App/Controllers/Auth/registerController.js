@@ -6,7 +6,7 @@ const Role = db.role;
 const register = (req, res) => {
 	const { username, password } = req.body;
 
-	User.findOne({ $eq: username}, (err, user) => {
+	User.findOne({ username: { $eq: username }}, (err, user) => {
 		if (err) {
 			return res.status(500).json({ error: 'Internal Server Error' });
 		}

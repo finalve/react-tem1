@@ -7,7 +7,7 @@ const User = db.user;
 
 const login = (req, res) => {
 	const { username, password } = req.body;
-	User.findOne({ $eq: username })
+	User.findOne({ username: { $eq: username }})
 		.populate("roles", "-__v")
 		.exec((err, user) => {
 			if (err) {

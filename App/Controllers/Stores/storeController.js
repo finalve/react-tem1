@@ -110,6 +110,10 @@ exports.CreateStore = (req, res) => {
 exports.PurchaseItem = (req, res) => {
     const { orderId } = req.body;
     const userId = req.userId;
+    
+    if (typeof orderId !== 'string' || !orderId.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(400).json({ error: 'Invalid Order ID!' });
+    }
     Purchase.findOne({ orderid: orderId }, (err, order) => {
         if (err)
             return res.status(500).json({ error: 'Internal Server Error' });

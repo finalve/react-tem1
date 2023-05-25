@@ -4,6 +4,11 @@ const path = require('path');
 
 exports.GetImage = (req, res) => {
  const { id } = req.params;
+  // Add validation for id
+  if (!id || id.includes('/')) {
+    res.status(400).send({ error: 'Invalid ID' });
+    return;
+  }
  const filePathPng = path.join(__dirname, '../../../images', `${id}.png`);
  const filePathJpg = path.join(__dirname, '../../../images', `${id}.jpg`);
  let fileExtension;
